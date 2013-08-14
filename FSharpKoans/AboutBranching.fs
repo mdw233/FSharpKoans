@@ -17,9 +17,19 @@ module ``about branching`` =
                 "it's even!"
             else
                 "it's odd!"
+
+        let isOdd x = 
+            if x % 2 = 0 then
+                true
+            else
+                false
+
                 
         let result = isEven 2                
-        AssertEquality result __
+        AssertEquality result "it's even!"
+
+        let r = isOdd 3
+        AssertEquality r false
     
     [<Koan>]
     let IfStatementsReturnValues() =
@@ -34,7 +44,7 @@ module ``about branching`` =
             else
                 "no problem here"
 
-        AssertEquality result __
+        AssertEquality result "no problem here"
 
     [<Koan>]
     let BranchingWithAPatternMatch() =
@@ -42,12 +52,23 @@ module ``about branching`` =
             match x with
             | "apple" -> true
             | _ -> false
-        
+
         let result1 = isApple "apple"
         let result2 = isApple ""
         
-        AssertEquality result1 __
-        AssertEquality result2 __
+        AssertEquality result1 true
+        AssertEquality result2 false
+
+        let isSpecial x = 
+            match x with
+            | var1 when var1 <= 4 -> true
+            | _ -> false
+
+        let result3 = isSpecial 4
+        let result4 = isSpecial 5
+
+        AssertEquality result3 true
+        AssertEquality result4 false
     
     [<Koan>]
     let UsingTuplesWithIfStatementsQuicklyBecomesClumsy() =
@@ -64,8 +85,8 @@ module ``about branching`` =
         let person1 = ("Chris", "steak")
         let person2 = ("Dave", "veggies")
         
-        AssertEquality (getDinner person1) __
-        AssertEquality (getDinner person2) __
+        AssertEquality (getDinner person1) "Chris wants 'em some steak"
+        AssertEquality (getDinner person2) "Dave doesn't want red meat"
         
     [<Koan>]
     let PatternMatchingIsNicer() =
@@ -80,5 +101,5 @@ module ``about branching`` =
         let person1 = ("Bob", "fish")
         let person2 = ("Sally", "Burger")
         
-        AssertEquality (getDinner person1) __
-        AssertEquality (getDinner person2) __
+        AssertEquality (getDinner person1) "Bob doesn't want red meat"
+        AssertEquality (getDinner person2) "Sally wants 'em some Burger"

@@ -83,3 +83,15 @@ module ``about let`` =
         let x = 100
          
         AssertEquality x 100
+
+    [<Koan>]
+    let XXXXXXXXXX() =
+        let isUserValid user password =
+            if user <> password then
+                true
+            else
+                false
+        
+        let isValid = isUserValid "someuser" "somePw"
+
+        AssertEquality isValid true

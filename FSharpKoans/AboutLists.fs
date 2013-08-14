@@ -21,9 +21,9 @@ module ``about lists`` =
         //Note: The list data type in F# is a singly linked list, 
         //      so indexing elements is O(n). 
         
-        AssertEquality list.Head __
-        AssertEquality list.Tail __
-        AssertEquality list.Length __
+        AssertEquality list.Head "apple"
+        AssertEquality list.Tail ["pear"; "grape"; "peach"]
+        AssertEquality list.Length 4
 
         (* .NET developers coming from other languages may be surprised
            that F#'s list type is not the same as the base class library's
@@ -42,13 +42,20 @@ module ``about lists`` =
         //Note: "::" is known as "cons"
         
         AssertEquality ["apple"; "pear"; "grape"; "peach"] third
-        AssertEquality second __
-        AssertEquality first __
+        AssertEquality second ["pear"; "grape"; "peach"]
+        AssertEquality first ["grape"; "peach"]
+
+        let list = ["abc"; "def"; "efg"]
+        let listWithMoreElements = "123" :: list
+
+
+        AssertEquality listWithMoreElements ["123"; "abc"; "def"; "efg"]
+        AssertEquality (list.Item 1) "def"
 
         //What happens if you uncomment the following?
 
-        //first.Head <- "apple"
-        //first.Tail <- ["peach"; "pear"]
+//        first.Head <- "apple"
+//        first.Tail <- ["peach"; "pear"]
 
         //THINK ABOUT IT: Can you change the contents of a list once it has been
         //                created?
@@ -59,8 +66,8 @@ module ``about lists`` =
         let first = ["apple"; "pear"; "grape"]
         let second = first @ ["peach"]
 
-        AssertEquality first __
-        AssertEquality second __
+        AssertEquality first ["apple"; "pear"; "grape"]
+        AssertEquality second ["apple"; "pear"; "grape"; "peach"]
 
     (* THINK ABOUT IT: In general, what performs better for building lists, 
        :: or @? Why?
@@ -73,32 +80,49 @@ module ``about lists`` =
     let CreatingListsWithARange() =
         let list = [0..4]
         
-        AssertEquality list.Head __
-        AssertEquality list.Tail __
+        AssertEquality list.Head 0
+        AssertEquality list.Tail [1; 2; 3; 4]
         
     [<Koan>]
     let CreatingListsWithComprehensions() =
         let list = [for i in 0..4 do yield i ]
                             
-        AssertEquality list __
+        AssertEquality list [0;1;2;3;4]
     
     [<Koan>]
     let ComprehensionsWithConditions() =
         let list = [for i in 0..10 do 
                         if i % 2 = 0 then yield i ]
                             
-        AssertEquality list __
+        AssertEquality list [0;2;4;6;8;10]
 
     [<Koan>]
     let TransformingListsWithMap() =
         let square x =
             x * x
 
+        let cube x = 
+            x * x * x
+
         let original = [0..5]
         let result = List.map square original
+        let cubed = List.map cube original
 
-        AssertEquality original __
-        AssertEquality result __
+        AssertEquality original [0;1;2;3;4;5]
+        AssertEquality result [0;1;4;9;16;25]
+
+        let s x = x * x
+        let originalList = [0..5]
+        let multipliedList = List.map s originalList
+        
+        AssertEquality multipliedList [0;1;4;9;16;25]
+
+        let isEven x = x % 2 = 0
+        let ol = [0..5]
+        let evens = List.filter isEven ol
+        
+        AssertEquality evens [0;2;4]
+
 
     [<Koan>]
     let FilteringListsWithWhere() =
@@ -108,8 +132,8 @@ module ``about lists`` =
         let original = [0..5]
         let result = List.filter isEven original
 
-        AssertEquality original __
-        AssertEquality result __
+        AssertEquality original [0;1;2;3;4;5]
+        AssertEquality result [0;2;4]
 
     [<Koan>]
     let DividingListsWithPartition() =
@@ -119,8 +143,9 @@ module ``about lists`` =
         let original = [0..5]
         let result1, result2 = List.partition isOdd original
         
-        AssertEquality result1 __
-        AssertEquality result2 __
+        AssertEquality result1 [1;3;5]
+        AssertEquality result2 [0;2;4]
+
 
     (* Note: There are many other useful methods in the List module. Check them
        via intellisense in Visual Studio by typing '.' after List, or online at
